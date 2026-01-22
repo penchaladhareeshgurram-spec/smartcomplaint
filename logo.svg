@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Background -->
+  <rect width="200" height="200" fill="#0a0e27"/>
+  
+  <!-- Gradient definitions -->
+  <defs>
+    <linearGradient id="mainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0066ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ffff00;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="glowGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0066ff;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#ffff00;stop-opacity:0.3" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Glow effect -->
+  <circle cx="100" cy="100" r="95" fill="none" stroke="url(#glowGradient)" stroke-width="2" opacity="0.5"/>
+  
+  <!-- Main icon circle -->
+  <circle cx="100" cy="100" r="85" fill="url(#mainGradient)" opacity="0.1" stroke="url(#mainGradient)" stroke-width="2"/>
+  
+  <!-- Lightning bolt (left) -->
+  <g transform="translate(50, 60)">
+    <path d="M 15 0 L 5 20 L 15 20 L 0 45 L 20 25 L 10 25 L 25 0 Z" fill="url(#mainGradient)" stroke="url(#mainGradient)" stroke-width="2"/>
+  </g>
+  
+  <!-- Speech bubble / Complaint icon (right) -->
+  <g transform="translate(110, 65)">
+    <!-- Bubble -->
+    <rect x="0" y="0" width="50" height="40" rx="8" fill="none" stroke="url(#mainGradient)" stroke-width="2"/>
+    <!-- Pointer -->
+    <polygon points="15,40 20,50 25,40" fill="url(#mainGradient)"/>
+    <!-- Dot inside -->
+    <circle cx="15" cy="15" r="3" fill="url(#mainGradient)"/>
+    <circle cx="27" cy="15" r="3" fill="url(#mainGradient)"/>
+    <circle cx="39" cy="15" r="3" fill="url(#mainGradient)"/>
+    <line x1="15" y1="25" x2="39" y2="25" stroke="url(#mainGradient)" stroke-width="2"/>
+  </g>
+  
+  <!-- Text -->
+  <text x="100" y="160" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="url(#mainGradient)">
+    Smart Complaint
+  </text>
+</svg>

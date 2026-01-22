@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="User Dashboard - Smart Complaint System">
+  <title>My Dashboard - Smart Complaint System</title>
+  
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <header>
+    <nav class="container flex-between">
+      <div class="logo">⚡ SmartComplaint</div>
+      
+      <div style="display: flex; align-items: center; gap: 2rem;">
+        <div class="flex-center" style="gap: 1rem; position: relative;">
+          <button class="btn btn-sm" style="border: 1px solid rgba(255,255,255,0.1); background: transparent;" id="notifications-btn">
+            🔔
+            <span id="notification-badge" class="badge" style="position: absolute; top: -8px; right: -8px; display: none;">1</span>
+          </button>
+          <div id="notifications-dropdown" style="display: none; position: absolute; top: 50px; right: 0; background: var(--glass); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-md); width: 300px; max-height: 400px; overflow-y: auto; z-index: 100;">
+            <div style="padding: 1rem;">
+              <div id="notifications-list"></div>
+              <p id="no-notifications" class="text-center" style="color: var(--text-muted); padding: 1rem;">No notifications</p>
+            </div>
+          </div>
+        </div>
+        
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <div class="text-right">
+            <div id="user-name" style="font-weight: 600;"></div>
+            <small id="user-role" style="color: var(--text-muted);"></small>
+          </div>
+          <button class="btn btn-sm" onclick="logout()" style="background: rgba(239, 68, 68, 0.2); color: var(--danger);">
+            Logout
+          </button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="dashboard-layout container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <ul class="sidebar-menu">
+        <li class="sidebar-item">
+          <a href="#" class="sidebar-link active" onclick="showSection('dashboard')">
+            📊 Dashboard
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="#" class="sidebar-link" onclick="showSection('new-complaint')">
+            ➕ New Complaint
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="#" class="sidebar-link" onclick="showSection('complaints')">
+            📋 My Complaints
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="#" class="sidebar-link" onclick="showSection('profile')">
+            👤 Profile
+          </a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Notifications Container -->
+      <div id="notifications-container"></div>
+
+      <!-- Dashboard Section -->
+      <section id="dashboard-section" class="section">
+        <div class="flex-between mb">
+          <h1>Dashboard</h1>
+          <div id="last-update" style="font-size: 0.85rem; color: var(--text-muted);">Last updated: just now</div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="grid grid-4 mb">
+          <div class="stat-card">
+            <div class="stat-label">Total Complaints</div>
+            <div class="stat-number" id="stat-total">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Pending</div>
+            <div class="stat-number" id="stat-pending" style="color: var(--warning);">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">In Progress</div>
+            <div class="stat-number" id="stat-in-progress" style="color: var(--info);">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Resolved</div>
+            <div class="stat-number" id="stat-resolved" style="color: var(--success);">0</div>
+          </div>
+        </div>
+
+        <!-- Recent Complaints Table -->
+        <div class="card">
+          <div class="card-header">
+            <h3>Recent Complaints</h3>
+            <a href="#" onclick="showSection('complaints')" style="color: var(--accent-yellow); font-size: 0.9rem;">View All →</a>
+          </div>
+          
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Category</th>
+                  <th>Status</th>
+                  <th>Priority</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody id="recent-complaints-table">
+                <tr>
+                  <td colspan="5" class="text-center" style="color: var(--text-muted); padding: 2rem;">
+                    No complaints yet
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- New Complaint Section -->
+      <section id="new-complaint-section" class="section hidden">
+        <h1 style="margin-bottom: 2rem;">File a New Complaint</h1>
+
+        <div class="card" style="max-width: 600px;">
+          <form id="complaint-form">
+            <div class="form-group">
+              <label for="complaint-title">Complaint Title *</label>
+              <input 
+                type="text" 
+                id="complaint-title" 
+                name="title" 
+                placeholder="Brief description of the issue" 
+                required
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="complaint-category">Category *</label>
+              <select id="complaint-category" name="category" required>
+                <option value="">Select a category...</option>
+                <option value="Infrastructure">Infrastructure</option>
+                <option value="Cleanliness">Cleanliness</option>
+                <option value="Security">Security</option>
+                <option value="Utilities">Utilities</option>
+                <option value="Maintenance">Maintenance</option>
+                <option value="Noise">Noise</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="complaint-description">Detailed Description *</label>
+              <textarea 
+                id="complaint-description" 
+                name="description" 
+                placeholder="Provide detailed information about the issue..." 
+                required
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="complaint-priority">Priority Level</label>
+              <select id="complaint-priority" name="priority">
+                <option value="Low">Low</option>
+                <option value="Medium" selected>Medium</option>
+                <option value="High">High</option>
+                <option value="Urgent">Urgent</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="complaint-image">Attach Photo</label>
+              <input 
+                type="file" 
+                id="complaint-image" 
+                name="image" 
+                accept="image/*"
+                onchange="handleImageSelect(event)"
+              >
+              <small>Max 5MB. Supported: JPG, PNG, WebP</small>
+              <div id="image-preview" style="margin-top: 1rem; display: none;">
+                <img id="preview-img" style="max-width: 100%; max-height: 300px; border-radius: var(--radius-md);">
+              </div>
+            </div>
+
+            <div class="flex gap" style="margin-bottom: 1rem;">
+              <button type="button" class="btn btn-secondary" onclick="getLocation()">
+                📍 Add Location
+              </button>
+              <input type="hidden" id="complaint-location" name="location" value="">
+              <span id="location-status" style="flex: 1; display: flex; align-items: center; color: var(--text-muted); font-size: 0.9rem;"></span>
+            </div>
+
+            <div class="flex gap">
+              <button type="submit" class="btn btn-primary" style="flex: 1;">
+                Submit Complaint
+              </button>
+              <button type="button" class="btn btn-secondary" onclick="resetForm()" style="flex: 1;">
+                Clear Form
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- Complaints List Section -->
+      <section id="complaints-section" class="section hidden">
+        <div class="flex-between mb">
+          <h1>My Complaints</h1>
+          <button class="btn btn-primary btn-sm" onclick="showSection('new-complaint')">
+            ➕ New Complaint
+          </button>
+        </div>
+
+        <!-- Filters -->
+        <div class="card mb">
+          <div class="grid grid-3" style="gap: 1rem;">
+            <div>
+              <label>Filter by Status</label>
+              <select id="filter-status" onchange="filterComplaints()">
+                <option value="">All Statuses</option>
+                <option value="Pending">Pending</option>
+                <option value="In Progress">In Progress</option>
+                <option value="On Hold">On Hold</option>
+                <option value="Resolved">Resolved</option>
+              </select>
+            </div>
+            <div>
+              <label>Filter by Priority</label>
+              <select id="filter-priority" onchange="filterComplaints()">
+                <option value="">All Priorities</option>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+                <option value="Urgent">Urgent</option>
+              </select>
+            </div>
+            <div>
+              <label>Filter by Category</label>
+              <select id="filter-category" onchange="filterComplaints()">
+                <option value="">All Categories</option>
+                <option value="Infrastructure">Infrastructure</option>
+                <option value="Cleanliness">Cleanliness</option>
+                <option value="Security">Security</option>
+                <option value="Utilities">Utilities</option>
+                <option value="Maintenance">Maintenance</option>
+                <option value="Noise">Noise</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Complaints List -->
+        <div id="complaints-list"></div>
+      </section>
+
+      <!-- Profile Section -->
+      <section id="profile-section" class="section hidden">
+        <h1 style="margin-bottom: 2rem;">My Profile</h1>
+
+        <div class="card" style="max-width: 600px;">
+          <div class="card-body">
+            <div style="margin-bottom: 1rem;">
+              <strong>Name:</strong> <span id="profile-name"></span>
+            </div>
+            <div style="margin-bottom: 1rem;">
+              <strong>Email:</strong> <span id="profile-email"></span>
+            </div>
+            <div style="margin-bottom: 1rem;">
+              <strong>Phone:</strong> <span id="profile-phone"></span>
+            </div>
+            <div style="margin-bottom: 1rem;">
+              <strong>Role:</strong> <span id="profile-role" class="badge badge-primary"></span>
+            </div>
+            <div>
+              <strong>Member Since:</strong> <span id="profile-created"></span>
+            </div>
+          </div>
+          
+          <div class="card-footer">
+            <button class="btn btn-secondary" onclick="editProfile()">
+              Edit Profile
+            </button>
+            <button class="btn btn-danger" onclick="logout()">
+              Logout
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/user.js"></script>
+  <script src="js/realtime.js"></script>
+  
+  <script>
+    let currentComplaintImage = null;
+    
+    // Initialize dashboard
+    function initDashboard() {
+      if (!Auth.isAuthenticated()) {
+        window.location.href = 'login.html';
+        return;
+      }
+      
+      // Set user info
+      document.getElementById('user-name').textContent = Auth.currentUser.name;
+      document.getElementById('user-role').textContent = Auth.currentUser.role;
+      
+      // Load initial data
+      loadDashboardStats();
+      loadRecentComplaints();
+      loadAllComplaints();
+      loadProfile();
+      
+      // Setup real-time updates
+      RealTime.subscribeToUserComplaints(Auth.currentUser.id, (complaint) => {
+        loadDashboardStats();
+        loadRecentComplaints();
+        RealTime.showInfo(`Complaint "${complaint.title}" updated!`);
+      });
+      
+      // Setup notification listeners
+      RealTime.subscribe('notification', (notification) => {
+        updateNotificationBadge();
+      });
+      
+      // Notifications dropdown
+      document.getElementById('notifications-btn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        const dropdown = document.getElementById('notifications-dropdown');
+        dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+        updateNotificationsDropdown();
+      });
+      
+      document.addEventListener('click', () => {
+        document.getElementById('notifications-dropdown').style.display = 'none';
+      });
+    }
+    
+    function loadDashboardStats() {
+      const stats = User.getComplaintStats();
+      document.getElementById('stat-total').textContent = stats.total;
+      document.getElementById('stat-pending').textContent = stats.pending;
+      document.getElementById('stat-in-progress').textContent = stats.inProgress;
+      document.getElementById('stat-resolved').textContent = stats.resolved;
+    }
+    
+    function loadRecentComplaints() {
+      const complaints = User.getAllComplaints().slice(0, 5);
+      const tbody = document.getElementById('recent-complaints-table');
+      
+      if (complaints.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" class="text-center" style="color: var(--text-muted); padding: 2rem;">No complaints yet</td></tr>';
+        return;
+      }
+      
+      tbody.innerHTML = complaints.map(c => `
+        <tr onclick="viewComplaintDetail('${c.id}')" style="cursor: pointer;">
+          <td><strong>${c.title}</strong></td>
+          <td><span class="badge badge-${User.getCategoryBadge(c.category)}">${c.category}</span></td>
+          <td><span class="badge badge-${User.getStatusBadge(c.status)}">${c.status}</span></td>
+          <td><span class="badge badge-${User.getPriorityBadge(c.priority)}">${c.priority}</span></td>
+          <td><small>${User.formatDate(c.createdAt)}</small></td>
+        </tr>
+      `).join('');
+    }
+    
+    function loadAllComplaints() {
+      renderComplaintsList();
+    }
+    
+    function filterComplaints() {
+      renderComplaintsList();
+    }
+    
+    function renderComplaintsList() {
+      let complaints = User.getAllComplaints();
+      
+      const status = document.getElementById('filter-status')?.value;
+      const priority = document.getElementById('filter-priority')?.value;
+      const category = document.getElementById('filter-category')?.value;
+      
+      if (status) complaints = complaints.filter(c => c.status === status);
+      if (priority) complaints = complaints.filter(c => c.priority === priority);
+      if (category) complaints = complaints.filter(c => c.category === category);
+      
+      const container = document.getElementById('complaints-list');
+      
+      if (complaints.length === 0) {
+        container.innerHTML = '<div class="card text-center"><p style="color: var(--text-muted);">No complaints found</p></div>';
+        return;
+      }
+      
+      container.innerHTML = complaints.map(c => `
+        <div class="card mb" style="cursor: pointer;" onclick="viewComplaintDetail('${c.id}')">
+          <div class="card-header">
+            <div>
+              <h3>${c.title}</h3>
+              <small style="color: var(--text-muted);">ID: ${c.id}</small>
+            </div>
+            <div style="text-align: right;">
+              <span class="badge badge-${User.getStatusBadge(c.status)}">${c.status}</span>
+            </div>
+          </div>
+          
+          <div class="card-body">
+            <p>${c.description}</p>
+            <div class="flex" style="gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem;">
+              <span class="badge badge-${User.getCategoryBadge(c.category)}">${c.category}</span>
+              <span class="badge badge-${User.getPriorityBadge(c.priority)}">${c.priority}</span>
+            </div>
+            <small style="color: var(--text-muted);">Filed on ${User.formatDate(c.createdAt)}</small>
+          </div>
+          
+          <div class="card-footer">
+            <div style="flex: 1;">
+              <div style="height: 4px; background: var(--glass); border-radius: 2px; overflow: hidden;">
+                <div style="width: ${User.getStatusProgress(c.status)}%; height: 100%; background: linear-gradient(90deg, var(--primary-blue), var(--accent-yellow)); transition: width 0.3s;"></div>
+              </div>
+            </div>
+            <span style="font-size: 0.9rem; color: var(--text-secondary);">→</span>
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    function viewComplaintDetail(complaintId) {
+      const complaint = User.getComplaint(complaintId);
+      if (!complaint) return;
+      
+      const modal = document.getElementById('complaint-modal') || createComplaintModal();
+      document.getElementById('modal-complaint-title').textContent = complaint.title;
+      document.getElementById('modal-complaint-body').innerHTML = `
+        <div style="margin-bottom: 1rem;">
+          <p><strong>Description:</strong></p>
+          <p>${complaint.description}</p>
+        </div>
+        
+        <div class="grid grid-2" style="margin-bottom: 1rem;">
+          <div>
+            <strong>Category:</strong><br>
+            <span class="badge badge-${User.getCategoryBadge(complaint.category)}">${complaint.category}</span>
+          </div>
+          <div>
+            <strong>Priority:</strong><br>
+            <span class="badge badge-${User.getPriorityBadge(complaint.priority)}">${complaint.priority}</span>
+          </div>
+          <div>
+            <strong>Status:</strong><br>
+            <span class="badge badge-${User.getStatusBadge(complaint.status)}">${complaint.status}</span>
+          </div>
+          <div>
+            <strong>Created:</strong><br>
+            <small>${User.formatDate(complaint.createdAt)}</small>
+          </div>
+        </div>
+        
+        ${complaint.assignedTo ? `<p><strong>Assigned To:</strong> Staff Member</p>` : ''}
+        ${complaint.notes.length > 0 ? `
+          <div>
+            <strong>Admin Notes:</strong>
+            <div class="card" style="background: rgba(255,255,0,0.05); margin-top: 0.5rem;">
+              ${complaint.notes.map(note => `
+                <div style="margin-bottom: 0.5rem;">
+                  <small style="color: var(--text-muted);">${User.formatDate(note.timestamp)}</small>
+                  <p style="margin: 0.25rem 0 0 0;">${note.text}</p>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        ` : ''}
+        
+        ${complaint.resolutionProof ? `
+          <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);">
+            <strong>Resolution Proof:</strong>
+            <p>${complaint.resolutionProof}</p>
+          </div>
+        ` : ''}
+      `;
+      modal.classList.add('active');
+    }
+    
+    function createComplaintModal() {
+      const modal = document.createElement('div');
+      modal.id = 'complaint-modal';
+      modal.className = 'modal';
+      modal.innerHTML = `
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 id="modal-complaint-title"></h2>
+            <button class="modal-close" onclick="this.closest('.modal').classList.remove('active')">✕</button>
+          </div>
+          <div id="modal-complaint-body"></div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) modal.classList.remove('active');
+      });
+      return modal;
+    }
+    
+    function loadProfile() {
+      const user = Auth.currentUser;
+      document.getElementById('profile-name').textContent = user.name;
+      document.getElementById('profile-email').textContent = user.email;
+      document.getElementById('profile-phone').textContent = user.phone || 'Not provided';
+      document.getElementById('profile-role').textContent = user.role;
+      document.getElementById('profile-created').textContent = new Date(user.createdAt).toLocaleDateString();
+    }
+    
+    function showSection(section) {
+      document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
+      document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+      
+      switch(section) {
+        case 'dashboard':
+          document.getElementById('dashboard-section').classList.remove('hidden');
+          break;
+        case 'new-complaint':
+          document.getElementById('new-complaint-section').classList.remove('hidden');
+          break;
+        case 'complaints':
+          document.getElementById('complaints-section').classList.remove('hidden');
+          break;
+        case 'profile':
+          document.getElementById('profile-section').classList.remove('hidden');
+          break;
+      }
+      
+      event.target.closest('.sidebar-link')?.classList.add('active');
+    }
+    
+    async function handleImageSelect(event) {
+      const file = event.target.files[0];
+      if (file) {
+        try {
+          currentComplaintImage = await User.uploadImage(file);
+          const preview = document.getElementById('image-preview');
+          document.getElementById('preview-img').src = currentComplaintImage;
+          preview.style.display = 'block';
+          RealTime.showSuccess('Image uploaded successfully');
+        } catch (error) {
+          RealTime.showError(error);
+        }
+      }
+    }
+    
+    async function getLocation() {
+      try {
+        const location = await User.getLocation();
+        document.getElementById('complaint-location').value = JSON.stringify(location);
+        document.getElementById('location-status').textContent = `📍 Location: ${location.lat.toFixed(4)}, ${location.lng.toFixed(4)}`;
+        RealTime.showSuccess('Location captured');
+      } catch (error) {
+        RealTime.showError(error);
+      }
+    }
+    
+    async function submitComplaint(event) {
+      event.preventDefault();
+      
+      try {
+        const complaint = await User.createComplaint({
+          title: document.getElementById('complaint-title').value,
+          description: document.getElementById('complaint-description').value,
+          category: document.getElementById('complaint-category').value,
+          priority: document.getElementById('complaint-priority').value,
+          image: currentComplaintImage,
+          location: JSON.parse(document.getElementById('complaint-location').value || '{}')
+        });
+        
+        RealTime.showSuccess('✓ Complaint submitted successfully!');
+        resetForm();
+        setTimeout(() => showSection('complaints'), 1500);
+        loadDashboardStats();
+        
+      } catch (error) {
+        RealTime.showError(error);
+      }
+    }
+    
+    function resetForm() {
+      document.getElementById('complaint-form').reset();
+      currentComplaintImage = null;
+      document.getElementById('image-preview').style.display = 'none';
+      document.getElementById('complaint-location').value = '';
+      document.getElementById('location-status').textContent = '';
+    }
+    
+    function editProfile() {
+      RealTime.showInfo('Profile editing coming soon!');
+    }
+    
+    async function logout() {
+      if (confirm('Are you sure you want to logout?')) {
+        await Auth.logout();
+      }
+    }
+    
+    function updateNotificationBadge() {
+      const count = RealTime.getUnreadCount();
+      const badge = document.getElementById('notification-badge');
+      if (count > 0) {
+        badge.style.display = 'block';
+        badge.textContent = count;
+      } else {
+        badge.style.display = 'none';
+      }
+    }
+    
+    function updateNotificationsDropdown() {
+      const list = document.getElementById('notifications-list');
+      const empty = document.getElementById('no-notifications');
+      const notifications = RealTime.getNotifications();
+      
+      if (notifications.length === 0) {
+        list.innerHTML = '';
+        empty.style.display = 'block';
+      } else {
+        empty.style.display = 'none';
+        list.innerHTML = notifications.map(n => `
+          <div class="card" style="background: rgba(0,102,255,0.05); margin-bottom: 0.5rem;">
+            <p><strong>${n.title}</strong></p>
+            <small>${n.message}</small>
+          </div>
+        `).join('');
+      }
+    }
+    
+    // Form submission
+    document.getElementById('complaint-form').addEventListener('submit', submitComplaint);
+    
+    // Initialize
+    document.addEventListener('DOMContentLoaded', initDashboard);
+  </script>
+</body>
+</html>

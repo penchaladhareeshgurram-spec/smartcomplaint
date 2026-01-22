@@ -1,0 +1,32 @@
+{
+  "name": "smart-complaint-system",
+  "version": "1.0.0",
+  "description": "Professional Smart Complaint & Service Management System",
+  "main": "index.html",
+  "scripts": {
+    "start": "http-server -p 8000 -c-1",
+    "dev": "http-server -p 8000",
+    "build": "echo 'No build step needed - pure frontend'",
+    "test": "echo 'Testing framework not configured'"
+  },
+  "keywords": [
+    "complaint",
+    "management",
+    "system",
+    "community",
+    "admin",
+    "dashboard"
+  ],
+  "author": "Smart Complaint Team",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-repo/smart-complaint-system"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

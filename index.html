@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Smart Complaint & Service Management System">
+  <title>Smart Complaint System - Community Management Platform</title>
+  
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <header>
+    <nav class="container flex-between">
+      <div class="logo">⚡ SmartComplaint</div>
+      
+      <button class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      
+      <ul class="nav-menu" id="nav-menu">
+        <li class="nav-item"><a href="#features">Features</a></li>
+        <li class="nav-item"><a href="#how-it-works">How It Works</a></li>
+        <li class="nav-item"><a href="#contact">Contact</a></li>
+      </ul>
+      
+      <div class="nav-actions">
+        <button class="btn btn-secondary btn-sm" onclick="window.location.href='login.html'">
+          Login
+        </button>
+        <button class="btn btn-primary btn-sm" onclick="window.location.href='register.html'">
+          Get Started
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <main>
+    <section class="hero">
+      <div class="container">
+        <div class="flex flex-col text-center pt" style="padding: 4rem 0;">
+          <h1 style="font-size: 3.5rem; margin-bottom: 1rem;">
+            Smart Community Complaint Management
+          </h1>
+          <p style="font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+            Raise complaints with photos & GPS location. Admin teams manage communities in real-time with advanced analytics and automated workflows.
+          </p>
+          
+          <div class="flex justify-center gap" style="gap: 1rem; margin-bottom: 2rem;">
+            <button class="btn btn-primary" onclick="window.location.href='register.html'">
+              Start as User
+            </button>
+            <button class="btn btn-secondary" onclick="window.location.href='login.html'">
+              Admin Login
+            </button>
+          </div>
+        </div>
+
+        <!-- Feature Cards Preview -->
+        <div class="grid grid-3" style="margin-top: 4rem;">
+          <div class="card">
+            <h3>📸 Easy Complaint Filing</h3>
+            <p>Upload photos, add location, set priority. Our intuitive form makes reporting issues simple and fast.</p>
+          </div>
+          <div class="card">
+            <h3>📊 Real-Time Dashboard</h3>
+            <p>Track complaint status in real-time. Get instant notifications when admins update your case.</p>
+          </div>
+          <div class="card">
+            <h3>🛠️ Admin Control</h3>
+            <p>Manage communities, assign staff, track analytics. Enterprise-grade tools for community management.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" style="padding: 4rem 0; border-top: 1px solid rgba(255,255,255,0.1);">
+      <div class="container">
+        <h2 class="text-center" style="margin-bottom: 3rem;">Key Features</h2>
+        
+        <div class="grid grid-2">
+          <!-- User Features -->
+          <div class="card">
+            <h3>👤 For Users</h3>
+            <ul style="list-style: none; padding-left: 0;">
+              <li style="margin-bottom: 1rem;">✓ Simple complaint registration</li>
+              <li style="margin-bottom: 1rem;">✓ Photo & location support</li>
+              <li style="margin-bottom: 1rem;">✓ Real-time status tracking</li>
+              <li style="margin-bottom: 1rem;">✓ Complaint history</li>
+              <li style="margin-bottom: 1rem;">✓ Push notifications</li>
+              <li>✓ Secure authentication</li>
+            </ul>
+          </div>
+
+          <!-- Admin Features -->
+          <div class="card">
+            <h3>👨‍💼 For Admins</h3>
+            <ul style="list-style: none; padding-left: 0;">
+              <li style="margin-bottom: 1rem;">✓ Community management</li>
+              <li style="margin-bottom: 1rem;">✓ Complaint assignment</li>
+              <li style="margin-bottom: 1rem;">✓ Advanced filtering</li>
+              <li style="margin-bottom: 1rem;">✓ Analytics & KPIs</li>
+              <li style="margin-bottom: 1rem;">✓ Audit logs</li>
+              <li>✓ Staff management</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" style="padding: 4rem 0; border-top: 1px solid rgba(255,255,255,0.1);">
+      <div class="container">
+        <h2 class="text-center" style="margin-bottom: 3rem;">How It Works</h2>
+        
+        <div class="grid grid-4">
+          <div class="text-center card">
+            <div style="font-size: 2rem; margin-bottom: 1rem;">1️⃣</div>
+            <h3>Register</h3>
+            <p>Create account and join your community</p>
+          </div>
+          
+          <div class="text-center card">
+            <div style="font-size: 2rem; margin-bottom: 1rem;">2️⃣</div>
+            <h3>Report</h3>
+            <p>File complaint with photos and location</p>
+          </div>
+          
+          <div class="text-center card">
+            <div style="font-size: 2rem; margin-bottom: 1rem;">3️⃣</div>
+            <h3>Track</h3>
+            <p>Monitor status in real-time dashboard</p>
+          </div>
+          
+          <div class="text-center card">
+            <div style="font-size: 2rem; margin-bottom: 1rem;">4️⃣</div>
+            <h3>Resolve</h3>
+            <p>Receive resolution and feedback</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section style="padding: 4rem 0; border-top: 1px solid rgba(255,255,255,0.1); text-align: center;">
+      <div class="container">
+        <h2>Ready to Improve Your Community?</h2>
+        <p style="margin-bottom: 2rem; font-size: 1.1rem;">Join thousands of communities managing complaints efficiently</p>
+        <button class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 2rem;" onclick="window.location.href='register.html'">
+          Get Started Today
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer style="border-top: 1px solid rgba(255,255,255,0.1); padding: 2rem 0; text-align: center; color: var(--text-muted);">
+    <div class="container">
+      <p>&copy; 2024 Smart Complaint System. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  
+  <script>
+    // Mobile menu toggle
+    const hamburger = document.getElementById('hamburger');
+    const navMenu = document.getElementById('nav-menu');
+    
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      navMenu.classList.toggle('active');
+    });
+    
+    // Close menu on link click
+    document.querySelectorAll('.nav-item a').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        navMenu.classList.remove('active');
+      });
+    });
+  </script>
+</body>
+</html>

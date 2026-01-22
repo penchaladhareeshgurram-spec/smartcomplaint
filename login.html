@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Login - Smart Complaint System">
+  <title>Login - Smart Complaint System</title>
+  
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <header>
+    <nav class="container flex-between">
+      <div class="logo" onclick="window.location.href='index.html'" style="cursor: pointer;">
+        ⚡ SmartComplaint
+      </div>
+      <div></div>
+    </nav>
+  </header>
+
+  <main style="min-height: calc(100vh - 80px); display: flex; align-items: center; justify-content: center; padding: 2rem;">
+    <div class="container" style="max-width: 450px;">
+      <div class="card" style="padding: 3rem;">
+        <!-- Header -->
+        <div class="text-center mb">
+          <h1>Welcome Back</h1>
+          <p>Sign in to your account to continue</p>
+        </div>
+
+        <!-- Error Message -->
+        <div id="error-message" class="alert alert-danger hidden mb"></div>
+
+        <!-- Login Form -->
+        <form id="login-form">
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              placeholder="you@example.com" 
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input 
+              type="password" 
+              id="password" 
+              name="password" 
+              placeholder="Enter your password" 
+              required
+            >
+          </div>
+
+          <div class="flex-between mb" style="font-size: 0.9rem;">
+            <label class="flex checkbox-label">
+              <input type="checkbox" id="remember-me">
+              <span>Remember me</span>
+            </label>
+            <a href="#" style="color: var(--text-secondary);">Forgot password?</a>
+          </div>
+
+          <button type="submit" class="btn btn-primary w-full" style="margin-bottom: 1rem;">
+            Sign In
+          </button>
+        </form>
+
+        <!-- Demo Credentials -->
+        <div class="card" style="background: rgba(0, 102, 255, 0.05); margin-bottom: 1rem;">
+          <p style="font-size: 0.85rem; margin-bottom: 0.5rem;"><strong>Demo Credentials:</strong></p>
+          <p style="font-size: 0.8rem; margin-bottom: 0.5rem;">
+            👤 <strong>User:</strong> john@example.com / password123
+          </p>
+          <p style="font-size: 0.8rem;">
+            🛡️ <strong>Admin:</strong> admin@smartcomplaint.com / admin123456
+          </p>
+        </div>
+
+        <!-- Signup Link -->
+        <p class="text-center" style="color: var(--text-secondary);">
+          Don't have an account? 
+          <a href="register.html" style="color: var(--accent-yellow); font-weight: 600;">Sign up</a>
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  
+  <script>
+    const form = document.getElementById('login-form');
+    const errorDiv = document.getElementById('error-message');
+    
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      
+      // Clear previous errors
+      errorDiv.classList.add('hidden');
+      errorDiv.innerHTML = '';
+      
+      try {
+        const user = await Auth.login(email, password);
+        
+        // Show success message
+        errorDiv.classList.remove('hidden', 'alert-danger');
+        errorDiv.classList.add('alert-success');
+        errorDiv.innerHTML = `Welcome back, ${user.name}! Redirecting...`;
+        
+        // Redirect based on role
+        setTimeout(() => {
+          if (user.role === 'admin') {
+            window.location.href = 'admin-dashboard.html';
+          } else {
+            window.location.href = 'user-dashboard.html';
+          }
+        }, 1500);
+        
+      } catch (error) {
+        errorDiv.classList.remove('hidden');
+        errorDiv.classList.add('alert-danger');
+        errorDiv.innerHTML = `<strong>Login Failed:</strong> ${error}`;
+      }
+    });
+    
+    // Quick demo login buttons
+    document.addEventListener('DOMContentLoaded', () => {
+      // Allow pressing Enter to submit
+      form.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && !e.target.matches('textarea')) {
+          form.dispatchEvent(new Event('submit'));
+        }
+      });
+    });
+  </script>
+</body>
+</html>
